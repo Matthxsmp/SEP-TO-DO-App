@@ -18,13 +18,13 @@ from kivy.core.audio import SoundLoader
 import random
 
 
-# 🔒 Resolución fija
+
 Window.size = (800, 600)
 Window.resizable = False
 Window.fullscreen = False
 
 
-# 🔲 Imagen con comportamiento de botón
+
 class ImageButton(ButtonBehavior, Image):
     pass
 
@@ -79,21 +79,21 @@ class TodoItem(BoxLayout):
         self.remove_callback = remove_callback
         self.progress_callback = progress_callback
 
-        # Checkbox como imagen personalizada (mismo tamaño que Botonotonio)
+      
         self.checkbox = ImageCheckbox(
             active=False,
             on_state=self.on_checkbox_active,
             size_hint=(None, None),
-            size=(60, 40)  # igual que el botón eliminar
+            size=(60, 40)  
         )
         self.add_widget(self.checkbox)
 
-        # Texto de la tarea
+        
         self.label = Label(text=text, halign="left", valign="middle", color=(1, 1, 1, 1))
         self.label.bind(size=self.label.setter("text_size"))
         self.add_widget(self.label)
 
-        # Botón eliminar como imagen (más grande)
+       
         btn_delete = Image(
             source="Assets/Botonotonio.png",
             size_hint=(None, None),
@@ -137,14 +137,14 @@ class CustomProgressBar(Widget):
 
     def redraw(self, *args):
         self.canvas.clear()
-        # Borde negro
+        
         with self.canvas:
             Color(0, 0, 0, 1)
             RoundedRectangle(pos=self.pos, size=self.size, radius=[20])
-            # Fondo (naranja muy oscuro)
+           
             Color(0.3, 0.12, 0.0, 1)
             RoundedRectangle(pos=(self.x + 3, self.y + 3), size=(self.width - 6, self.height - 6), radius=[20])
-            # Barra de progreso (relleno proporcional)
+            
             percent = 0
             if self.max > 0:
                 percent = float(self.value) / float(self.max)
@@ -154,7 +154,7 @@ class CustomProgressBar(Widget):
             else:
                 Color(0.3, 0.12, 0.0, 1)
             RoundedRectangle(pos=(self.x + 6, self.y + 6), size=(bar_width, self.height - 12), radius=[20])
-        # Actualiza el texto del porcentaje
+
         self.percent_text = f"{int(percent * 100)}%"
 
     def update_label(self, *args):
@@ -201,9 +201,9 @@ class FallingLeaf(Image):
 class Root(FloatLayout):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        # Capa de hojas entre fondo y cuadros
+
         self.leaf_layer = FloatLayout(size_hint=(1, 1), pos=(0, 0))
-        # Fondo
+
         self.background = Image(
             source="Assets/fondo.png",
             allow_stretch=True,
@@ -214,7 +214,7 @@ class Root(FloatLayout):
         self.add_widget(self.background)
         self.add_widget(self.leaf_layer)
 
-        # 📦 Cuadro principal
+
         self.todo_box = BoxLayout(
             orientation="vertical",
             size_hint=(0.7, 0.7),
@@ -222,10 +222,10 @@ class Root(FloatLayout):
             spacing=10
         )
 
-        # 🔶 Encabezado (con borde)
+
         self.header_box = BorderedBox(
-            color=(0.8, 0.4, 0.0, 1),       # naranja oscuro sólido
-            border_color=(0.1, 0.05, 0.0, 1),  # borde marrón muy oscuro
+            color=(0.8, 0.4, 0.0, 1),      
+            border_color=(0.1, 0.05, 0.0, 1),  
             orientation="vertical",
             size_hint=(1, None),
             height=100,
@@ -233,12 +233,12 @@ class Root(FloatLayout):
             spacing=5
         )
 
-        # Título "TO DO" con imagen Hojaoto a la izquierda y derecha (más cerca y más grande)
+
         title_row = BoxLayout(orientation="horizontal", size_hint=(1, None), height=40, spacing=2)
         title_row.add_widget(Image(
             source="Assets/Hojaoto.png",
             size_hint=(None, None),
-            size=(44, 44),  # más grande
+            size=(44, 44),  
             allow_stretch=True,
             keep_ratio=True
         ))
@@ -255,17 +255,17 @@ class Root(FloatLayout):
         title_row.add_widget(Image(
             source="Assets/Hojaoto.png",
             size_hint=(None, None),
-            size=(44, 44),  # más grande
+            size=(44, 44),  
             allow_stretch=True,
             keep_ratio=True
         ))
         self.header_box.add_widget(title_row)
 
-        # Input y botón
+
         input_box = BoxLayout(orientation="horizontal", size_hint=(1, None), height=40, spacing=5)
         self.task_input = TextInput(hint_text=" ", multiline=False)
 
-        # 🔲 Botón como imagen
+
         btn_add = ImageButton(
             source="Assets/Botonotoniosi.png",
             size_hint=(None, 1),
@@ -280,16 +280,15 @@ class Root(FloatLayout):
 
         self.todo_box.add_widget(self.header_box)
 
-        # 🔶 Lista de tareas (con borde + más oscura/transparente)
         self.list_box = BorderedBox(
-            color=(0.5, 0.2, 0.0, 0.8),       # marrón oscuro con transparencia
-            border_color=(0.1, 0.05, 0.0, 1),  # borde marrón oscuro
+            color=(0.5, 0.2, 0.0, 0.8),      
+            border_color=(0.1, 0.05, 0.0, 1),  
             orientation="vertical",
             size_hint=(1, 1),
             padding=10
         )
 
-        # Scroll con tareas
+
         self.scroll = ScrollView(size_hint=(1, 1))
         self.task_list = GridLayout(cols=1, spacing=5, size_hint_y=None)
         self.task_list.bind(minimum_height=self.task_list.setter("height"))
@@ -300,7 +299,7 @@ class Root(FloatLayout):
 
         self.add_widget(self.todo_box)
 
-        # Cuadro de progreso con esquinas rectas
+
         self.progress_box = BorderedBox(
             color=(0.8, 0.4, 0.0, 1),
             border_color=(0.1, 0.05, 0.0, 1),
@@ -310,16 +309,16 @@ class Root(FloatLayout):
             pos_hint={"x": 0, "y": 0},
             padding=10,
             spacing=5,
-            radius=0  # esquinas rectas
+            radius=0
         )
 
         self.progress_box.clear_widgets()
-        # Título "PROGRESS" con imagen Hojaoto a la izquierda y derecha (más cerca y más grande)
+
         progress_row = BoxLayout(orientation="horizontal", size_hint=(1, None), height=48, spacing=2)
         progress_row.add_widget(Image(
             source="Assets/Hojaoto.png",
             size_hint=(None, None),
-            size=(44, 44),  # más grande
+            size=(44, 44),  
             allow_stretch=True,
             keep_ratio=True
         ))
@@ -336,7 +335,7 @@ class Root(FloatLayout):
         progress_row.add_widget(Image(
             source="Assets/Hojaoto.png",
             size_hint=(None, None),
-            size=(44, 44),  # más grande
+            size=(44, 44), 
             allow_stretch=True,
             keep_ratio=True
         ))
@@ -349,15 +348,13 @@ class Root(FloatLayout):
 
         self.add_widget(self.progress_box)
 
-        # 🎵 Música de fondo (ruta actualizada y volumen bajo)
         self.music = SoundLoader.load("Music/Music.mp3")
         self.music_playing = True
         if self.music:
             self.music.loop = True
-            self.music.volume = 0.05  # Volumen bajo al iniciar
+            self.music.volume = 0.05  
             self.music.play()
 
-        # 🔊 Botón de música arriba a la derecha (ruta actualizada)
         self.music_btn = ImageButton(
             source="Assets/Botonaudio.png",
             size_hint=(None, None),
@@ -367,7 +364,6 @@ class Root(FloatLayout):
         self.music_btn.bind(on_release=self.toggle_music)
         self.add_widget(self.music_btn)
 
-        # Iniciar animación de hojas
         Clock.schedule_interval(self.spawn_leaf, 0.7)
         Clock.schedule_interval(self.update_leaves, 1/60.)
 
